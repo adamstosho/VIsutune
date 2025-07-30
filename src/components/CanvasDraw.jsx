@@ -10,12 +10,12 @@ const CanvasDraw = ({ onStrokeComplete, isPlaying }) => {
   const [brushSize, setBrushSize] = useState(4)
 
   const colors = [
-    "#3b82f6", // Blue - Lead synth
-    "#ef4444", // Red - Bass
-    "#10b981", // Green - Pad
-    "#f59e0b", // Yellow - Pluck
-    "#8b5cf6", // Purple - Bell
-    "#ec4899", // Pink - Noise
+    "#3b82f6", 
+    "#ef4444", 
+    "#10b981", 
+    "#f59e0b", 
+    "#8b5cf6", 
+    "#ec4899", 
   ]
 
   const getCanvasCoordinates = useCallback((e) => {
@@ -35,7 +35,7 @@ const CanvasDraw = ({ onStrokeComplete, isPlaying }) => {
 
   const startDrawing = useCallback(
     (e) => {
-      if (isPlaying) return // Don't allow drawing while playing
+      if (isPlaying) return 
 
       const coords = getCanvasCoordinates(e)
       const stroke = {
@@ -44,7 +44,7 @@ const CanvasDraw = ({ onStrokeComplete, isPlaying }) => {
         color: brushColor,
         size: brushSize,
         startTime: Date.now(),
-        hue: Number.parseInt(brushColor.slice(1), 16) % 360, // Convert hex to hue
+        hue: Number.parseInt(brushColor.slice(1), 16) % 360, 
       }
 
       setCurrentStroke(stroke)
@@ -65,7 +65,6 @@ const CanvasDraw = ({ onStrokeComplete, isPlaying }) => {
 
       setCurrentStroke(updatedStroke)
 
-      // Draw on canvas
       const canvas = canvasRef.current
       const ctx = canvas.getContext("2d")
       const points = updatedStroke.points
@@ -107,7 +106,6 @@ const CanvasDraw = ({ onStrokeComplete, isPlaying }) => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    // Set canvas size
     const resizeCanvas = () => {
       const container = canvas.parentElement
       canvas.width = container.clientWidth
@@ -117,13 +115,11 @@ const CanvasDraw = ({ onStrokeComplete, isPlaying }) => {
     resizeCanvas()
     window.addEventListener("resize", resizeCanvas)
 
-    // Mouse events
     canvas.addEventListener("mousedown", startDrawing)
     canvas.addEventListener("mousemove", draw)
     canvas.addEventListener("mouseup", stopDrawing)
     canvas.addEventListener("mouseout", stopDrawing)
 
-    // Touch events
     canvas.addEventListener("touchstart", startDrawing)
     canvas.addEventListener("touchmove", draw)
     canvas.addEventListener("touchend", stopDrawing)

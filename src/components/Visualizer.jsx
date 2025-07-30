@@ -34,15 +34,12 @@ const Visualizer = ({ strokes, isPlaying }) => {
     const ctx = canvas.getContext("2d")
 
     const animate = () => {
-      // Clear canvas with slight fade effect
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)"
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Draw all strokes with glow effect when playing
       strokes.forEach((stroke, index) => {
         if (stroke.points.length < 2) return
 
-        // Create glow effect when playing
         if (isPlaying) {
           const glowIntensity = Math.sin(Date.now() * 0.01 + index) * 0.5 + 0.5
           ctx.shadowColor = stroke.color
@@ -66,7 +63,6 @@ const Visualizer = ({ strokes, isPlaying }) => {
         ctx.stroke()
       })
 
-      // Update and draw particles
       if (isPlaying) {
         updateParticles(ctx)
       }
@@ -84,7 +80,6 @@ const Visualizer = ({ strokes, isPlaying }) => {
   }, [strokes, isPlaying])
 
   const updateParticles = (ctx) => {
-    // Add new particles occasionally
     if (Math.random() < 0.1 && strokes.length > 0) {
       const randomStroke = strokes[Math.floor(Math.random() * strokes.length)]
       if (randomStroke.points.length > 0) {
@@ -101,12 +96,11 @@ const Visualizer = ({ strokes, isPlaying }) => {
       }
     }
 
-    // Update and draw particles
     particlesRef.current = particlesRef.current.filter((particle) => {
       particle.x += particle.vx
       particle.y += particle.vy
       particle.life -= 0.02
-      particle.vy += 0.1 // gravity
+      particle.vy += 0.1 
 
       if (particle.life > 0) {
         ctx.save()

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useCallback } from "react"
 
-// Define types for Tone.js since we're importing it dynamically
 interface ToneType {
   start: () => Promise<void>
   Synth: any
@@ -37,48 +36,39 @@ export const useTone = () => {
   const loopRef = useRef<any>(null)
   const strokesRef = useRef<Stroke[]>([])
 
-  // Initialize Tone.js
   useEffect(() => {
     const initializeTone = async () => {
       try {
-        // Dynamically import Tone.js to avoid SSR issues
         const ToneModule = await import("tone")
-        const ToneInstance = ToneModule.default || ToneModule
+        const ToneInstance = ToneModule
         setTone(ToneInstance)
 
         await ToneInstance.start()
 
-        // Create different synths for different colors/instruments
         synthsRef.current = {
-          // Blue - Lead synth
           "#3b82f6": new ToneInstance.Synth({
             oscillator: { type: "sawtooth" },
             envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.8 },
           }).toDestination(),
 
-          // Red - Bass
           "#ef4444": new ToneInstance.FMSynth({
             harmonicity: 0.5,
             modulationIndex: 2,
             envelope: { attack: 0.1, decay: 0.3, sustain: 0.5, release: 1.2 },
           }).toDestination(),
 
-          // Green - Pad
           "#10b981": new ToneInstance.Synth({
             oscillator: { type: "sine" },
             envelope: { attack: 0.5, decay: 0.3, sustain: 0.7, release: 2.0 },
           }).toDestination(),
 
-          // Yellow - Pluck
           "#f59e0b": new ToneInstance.PluckSynth({
             attackNoise: 1,
             dampening: 4000,
             resonance: 0.9,
           }).toDestination(),
 
-          // Purple - Bell
           "#8b5cf6": new ToneInstance.MetalSynth({
-            frequency: 200,
             envelope: { attack: 0.001, decay: 1.4, release: 0.2 },
             harmonicity: 5.1,
             modulationIndex: 32,
@@ -86,9 +76,7 @@ export const useTone = () => {
             octaves: 1.5,
           }).toDestination(),
 
-          // Pink - Percussion
           "#ec4899": new ToneInstance.MetalSynth({
-            frequency: 200,
             envelope: { attack: 0.001, decay: 0.4, release: 0.1 },
             harmonicity: 3.1,
             modulationIndex: 16,
@@ -97,7 +85,6 @@ export const useTone = () => {
           }).toDestination(),
         }
 
-        // Set initial tempo
         ToneInstance.Transport.bpm.value = 120
 
         setIsInitialized(true)
@@ -106,7 +93,6 @@ export const useTone = () => {
       }
     }
 
-    // Initialize on first user interaction
     const handleFirstInteraction = () => {
       initializeTone()
       document.removeEventListener("click", handleFirstInteraction)
@@ -120,7 +106,6 @@ export const useTone = () => {
       document.removeEventListener("click", handleFirstInteraction)
       document.removeEventListener("touchstart", handleFirstInteraction)
 
-      // Cleanup
       if (loopRef.current) {
         loopRef.current.dispose()
       }
@@ -142,19 +127,15 @@ export const useTone = () => {
         return
       }
 
-      // Map stroke properties to musical parameters
       const synth = synthsRef.current[stroke.color]
 
-      // Map stroke length to note duration (0.1s to 2s)
       const duration = Math.max(0.1, Math.min(2, (stroke.length || 1) / 50))
 
-      // Map stroke hue to pitch (C3 to C6)
-      const baseFreq = 130.81 // C3 frequency in Hz
-      const semitoneRatio = Math.pow(2, 1/12) // Ratio between semitones
-      const noteOffset = Math.floor((stroke.hue % 360) / 30) // Map 360 degrees to 12 semitones
+      const baseFreq = 130.81 
+      const semitoneRatio = Math.pow(2, 1/12) 
+      const noteOffset = Math.floor((stroke.hue % 360) / 30) 
       const frequency = baseFreq * Math.pow(semitoneRatio, noteOffset)
 
-      // Map stroke speed to velocity/volume
       const velocity = stroke.duration ? Math.max(0.1, Math.min(1, 500 / stroke.duration)) : 0.5
 
       console.log("Triggering note:", { color: stroke.color, frequency, duration, velocity, synthType: synth.constructor.name })
@@ -179,20 +160,16 @@ export const useTone = () => {
 
       strokesRef.current = strokes
 
-      // Stop existing loop
       if (loopRef.current) {
         loopRef.current.dispose()
       }
 
-      // Create a 4-bar loop (16 beats at current BPM)
-      const loopLength = "4m" // 4 measures
+      const loopLength = "4m" 
 
       loopRef.current = new Tone.Loop((time: number) => {
-        // Play all strokes with timing based on their creation order
         strokes.forEach((stroke, index) => {
           const noteTime = time + ((index * 0.1) % Tone.Time(loopLength).toSeconds())
 
-          // Schedule the note
           Tone.Draw.schedule(() => {
             triggerNote(stroke)
           }, noteTime)

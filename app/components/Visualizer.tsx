@@ -108,7 +108,6 @@ const Visualizer = ({ strokes, isPlaying }: VisualizerProps) => {
   }, [strokes, isPlaying])
 
   const updateParticles = (ctx: CanvasRenderingContext2D) => {
-    // Add new particles occasionally
     if (Math.random() < 0.1 && strokes.length > 0) {
       const randomStroke = strokes[Math.floor(Math.random() * strokes.length)]
       if (randomStroke.points.length > 0) {
@@ -125,12 +124,11 @@ const Visualizer = ({ strokes, isPlaying }: VisualizerProps) => {
       }
     }
 
-    // Update and draw particles
     particlesRef.current = particlesRef.current.filter((particle) => {
       particle.x += particle.vx
       particle.y += particle.vy
       particle.life -= 0.02
-      particle.vy += 0.1 // gravity
+      particle.vy += 0.1 
 
       if (particle.life > 0) {
         ctx.save()
@@ -146,7 +144,7 @@ const Visualizer = ({ strokes, isPlaying }: VisualizerProps) => {
     })
   }
 
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" style={{ mixBlendMode: "screen" }} />
+  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none visualizer-canvas" />
 }
 
 export default Visualizer

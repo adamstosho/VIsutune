@@ -123,4 +123,33 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(59, 130, 246, 0.7);
   }
+
+  /* Visualizer canvas */
+  .visualizer-canvas {
+    mix-blend-mode: screen;
+  }
+
+  /* Chart components */
+  [data-color] {
+    background-color: var(--color-bg);
+    border-color: var(--color-border);
+  }
+
+  .chart-legend-item[data-color] {
+    background-color: var(--color-bg);
+  }
+
+  /* Sidebar components */
+  .sidebar-wrapper {
+    --sidebar-width: 16rem;
+    --sidebar-width-icon: 3rem;
+  }
+
+  .sidebar-mobile {
+    --sidebar-width: 18rem;
+  }
+
+  .sidebar-skeleton[data-width] {
+    max-width: var(--skeleton-width);
+  }
 }

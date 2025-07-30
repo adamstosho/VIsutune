@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "VisuTune - Generative Audio-Visual Playground",
   description: "Draw to create music • Each stroke becomes a note • Loop and jam",
-    generator: 'v0.dev'
+    generator: 'ART_Redox'
 }
 
 export default function RootLayout({
