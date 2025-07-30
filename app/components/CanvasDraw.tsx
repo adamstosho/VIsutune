@@ -202,6 +202,7 @@ const CanvasDraw = ({ onStrokeComplete, isPlaying }: CanvasDrawProps) => {
               className={`w-8 h-8 rounded-full border-2 transition-all ${
                 brushColor === color ? "border-white scale-110" : "border-gray-600"
               }`}
+              style={{ backgroundColor: color }}
               data-color={color}
               onClick={() => setBrushColor(color)}
             />
