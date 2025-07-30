@@ -159,7 +159,12 @@ npm start
 ```
 
 # Preview of the App Interface (Screenshots)
-
+![screenshots](/public/screenshots/screencapture-visutune-vercel-app-2025-07-30-23_18_05.png)
+Landing page of the app
+![screenshots](/public/screenshots/screencapture-visutune-vercel-app-2025-07-30-23_18_24.png)
+The app interface before drawing on canva
+![screenshots](/public/screenshots/screencapture-visutune-vercel-app-2025-07-30-23_18_47.png)
+The app interface after the after the drawing...
 
 ##  Use Cases
 
